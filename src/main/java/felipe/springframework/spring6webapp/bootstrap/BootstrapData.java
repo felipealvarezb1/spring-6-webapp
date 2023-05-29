@@ -2,8 +2,10 @@ package felipe.springframework.spring6webapp.bootstrap;
 
 import felipe.springframework.spring6webapp.domain.Author;
 import felipe.springframework.spring6webapp.domain.Book;
+import felipe.springframework.spring6webapp.domain.Publisher;
 import felipe.springframework.spring6webapp.repositories.AuthorRepository;
 import felipe.springframework.spring6webapp.repositories.BookRepository;
+import felipe.springframework.spring6webapp.repositories.PublisherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ public class BootstrapData implements CommandLineRunner {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -42,12 +45,27 @@ public class BootstrapData implements CommandLineRunner {
         ericSaved.getBooks().add(dddSaved);
         rodSaved.getBooks().add(noejbSaved);
 
+        Publisher osaka = new Publisher();
+        osaka.setPublisherName("Osaka");
+        osaka.setAddress("123 Main");
+        osaka.setState("New York");
+        osaka.setCity("New York");
+        osaka.setZip("055420");
+        Publisher savedPublisher = publisherRepository.save(osaka);
+
+        ddd.setPublisher(savedPublisher);
+        noejbSaved.setPublisher(savedPublisher);
+
         authorRepository.save(ericSaved);
         authorRepository.save(rodSaved);
+        bookRepository.save(dddSaved);
+        bookRepository.save(noejbSaved);
+
 
         System.out.println("In bootstrap");
         System.out.println("Author count: " + authorRepository.count());
         System.out.println("Book count: " + bookRepository.count());
+        System.out.println("Publisher count: " + publisherRepository.count());
 
 
     }
